@@ -315,7 +315,10 @@ def checkConfig():
         # config file found!
         print("Wal Steam config found")
 
-def checkCache(dpi):
+def applyFont(font):
+    print("Using font " + font)
+
+def checkCache(dpi, font):
     # check for the cache
     if not os.path.isdir(os.path.join(HOME_DIR, ".cache")):
         # make the .cache folder
@@ -330,6 +333,9 @@ def checkCache(dpi):
         # apply the dpi patches
         if (dpi==1):
             makeDpi()
+
+        # apply the font
+        applyFont(font)
     else:
         # cache folder exists
         print("Wal Steam cache found")
@@ -338,9 +344,12 @@ def checkCache(dpi):
         if (dpi==1):
             makeDpi()
 
-def checkInstall(oSys, dpi):
+        # apply the font
+        applyFont(font)
+
+def checkInstall(oSys, dpi, font):
     # check if the cache exists, make it if not
-    checkCache(dpi)
+    checkCache(dpi,font)
 
     # check if the config file exists
     checkConfig()
@@ -348,12 +357,12 @@ def checkInstall(oSys, dpi):
     # check if the skin is installed, install it if not
     checkSkin(oSys, dpi)
 
-def forceUpdate(oSys, dpi):
+def forceUpdate(oSys, dpi, font):
     # force update the cache and config files
     delConfig()
     delCache()
     delSkin(oSys)
-    checkCache(dpi)
+    checkCache(dpi, font)
     checkConfig()
 
 def getOs():
@@ -396,6 +405,9 @@ def getArgs():
     arg.add_argument("-u", action="store_true",
             help="Force update cache, skin, and config file, WARNING WILL OVERWRITE config.json")
 
+    arg.add_argument("-f",
+            help="Enter a custom font name (Roboto, Arial, Calibri, Helvitica)")
+
     return arg.parse_args()
 
 def main():
@@ -427,6 +439,11 @@ def main():
     if not arguments.d:
         dpi = 0
 
+    if arguments.f:
+        font = arguments.f
+    else:
+        font = "Roboto"
+
     # allow the user to enter a custom steam install location
     if arguments.s:
         oSys = arguments.s
@@ -442,13 +459,13 @@ def main():
     if arguments.u:
         print("Force updating cache and config")
         # first remove the cache and config
-        forceUpdate(oSys, dpi)
+        forceUpdate(oSys, dpi, font)
         print("Cache and config updated")
         print("Run with -w or -g to apply and re-enable wal_steam")
         sys.exit()
 
     # check for the cache, the skin, and get them if needed
-    checkInstall(oSys, dpi)
+    checkInstall(oSys, dpi, font)
 
     # get a list from either wal or wpg based on the mode
     colors = getColors(mode)
