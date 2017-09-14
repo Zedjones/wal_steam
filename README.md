@@ -41,6 +41,8 @@ interesting features).
 
 If you cloned the repo all you need to do is run the script with python 3 from wherever you downloaded it.
 
+For using a custom font make sure the name is correct and the font is installed. Also don't expect every font to look nice or work well as a ui font.
+
 Example:
 
 `wal-steam -w`
@@ -49,6 +51,7 @@ Example:
 Usage:
   wal_steam.py (-w | -g | -u) [-d]
   wal_steam.py ( -s ) ["/home/kota/bin/custom_steam_install/skins/"]
+  wal_steam.py ( -f ) ["Roboto"]
   wal_steam.py (-h | --help)
   wal_steam.py (-v | --version)
 
@@ -60,6 +63,7 @@ Options:
   -u                   force update cache and config file
   -d                   apply HiDPI community patch
   -s "/steam/skins"    specify a custom steam skins folder to use
+  -f "Roboto"          specify a custom font for steam to use (see note above)
 ```
 
 ## Screenshots
